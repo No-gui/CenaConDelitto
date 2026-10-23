@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Dashboard - Cena con Delitto</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen pb-12">
+
+    <!-- Header con Pulsanti Rapidi -->
+    <header class="bg-slate-800 border-b border-slate-700 sticky top-0 z-50 px-4 py-3 flex flex-wrap justify-between items-center gap-2 shadow-md">
+        <h1 class="text-base font-bold text-amber-400">🕵️‍♂️ Master Dashboard</h1>
+        <div class="flex items-center gap-1.5">
+            <button onclick="apriModalNuovoGiocatore()" class="bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold px-2.5 py-2 rounded-lg shadow transition">
+                ➕ Persona
+            </button>
+            <button onclick="apriModalNuovoRuolo()" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold px-2.5 py-2 rounded-lg shadow transition">
+                🎭 Ruolo
+            </button>
+            <button onclick="apriModalMessaggio(null)" class="bg-amber-600 hover:bg-amber-500 text-white text-xs font-semibold px-2.5 py-2 rounded-lg shadow transition">
+                📢 Tutti
+            </button>
+        </div>
+    </header>
+
+    <!-- Contenuto Principale -->
+    <main class="max-w-4xl mx-auto p-4 space-y-4">
+        <div class="flex justify-between items-center">
+            <h2 class="text-xl font-semibold text-slate-200">Elenco Partecipanti</h2>
+            <span id="counter" class="text-sm bg-slate-800 text-slate-400 px-2.5 py-1 rounded-full border border-slate-700">0 iscritti</span>
+        </div>
+
+        <div id="lista-giocatori" class="space-y-3">
+            <p class="text-center text-slate-500 py-8">Caricamento partecipanti...</p>
+        </div>
+    </main>
+
+    <!-- MODALE: INVIO MESSAGGIO (SINGOLO O BROADCAST) -->
+    <div id="modal-messaggio" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-2xl flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-800">
+                <h3 id="msg-titolo" class="font-bold text-amber-400 text-lg">Invia Messaggio</h3>
+                <button onclick="chiudiModali()" class="text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
+            </div>
+            <div class="p-4 space-y-3 text-sm">
+                <input type="hidden" id="msg-destinatario-id">
+                <div>
+                    <label id="msg-label" class="block text-slate-400 mb-1">Testo del messaggio:</label>
+                    <textarea id="msg-testo" rows="4" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-amber-500" placeholder="Scrivi qui il tuo messaggio..."></textarea>
+                </div>
+            </div>
+            <div class="p-4 border-t border-slate-700 flex justify-end gap-2 bg-slate-800">
+                <button onclick="chiudiModali()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm text-slate-200">Annulla</button>
+                <button onclick="inviaMessaggioEffettivo()" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-lg text-sm shadow">Invia Messaggio</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE: AGGIUNGI NUOVO GIOCATORE -->
+    <div id="modal-nuovo-giocatore" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-2xl flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-800">
+                <h3 class="font-bold text-indigo-400 text-lg">Aggiungi Nuovo Partecipante</h3>
+                <button onclick="chiudiModali()" class="text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
+            </div>
+            <div class="p-4 space-y-3 text-sm">
+                <div>
+                    <label class="block text-slate-400 mb-1">Nome *</label>
+                    <input type="text" id="new-g-nome" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">Cognome *</label>
+                    <input type="text" id="new-g-cognome" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">Telefono</label>
+                    <input type="text" id="new-g-telefono" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-indigo-500">
+                </div>
+            </div>
+            <div class="p-4 border-t border-slate-700 flex justify-end gap-2 bg-slate-800">
+                <button onclick="chiudiModali()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm text-slate-200">Annulla</button>
+                <button onclick="creaGiocatore()" class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white font-semibold rounded-lg text-sm shadow">Salva Partecipante</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE: AGGIUNGI NUOVO RUOLO -->
+    <div id="modal-nuovo-ruolo" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-lg rounded-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-800">
+                <h3 class="font-bold text-emerald-400 text-lg">Aggiungi Nuovo Ruolo / Scheda</h3>
+                <button onclick="chiudiModali()" class="text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
+            </div>
+            <div class="p-4 overflow-y-auto space-y-3 text-sm flex-1">
+                <div>
+                    <label class="block text-slate-400 mb-1">Nome Ruolo / Personaggio *</label>
+                    <input type="text" id="new-r-nome" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500" placeholder="Es. Il Maggiordomo Sospetto">
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">Profilo</label>
+                    <textarea id="new-r-profilo" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"></textarea>
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">Informazioni Pubbliche</label>
+                    <textarea id="new-r-pubbliche" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"></textarea>
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">Segreto Personale</label>
+                    <textarea id="new-r-segreto" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"></textarea>
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">Obiettivo di Gioco</label>
+                    <textarea id="new-r-obiettivo" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-emerald-500"></textarea>
+                </div>
+            </div>
+            <div class="p-4 border-t border-slate-700 flex justify-end gap-2 bg-slate-800">
+                <button onclick="chiudiModali()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm text-slate-200">Annulla</button>
+                <button onclick="creaRuolo()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold rounded-lg text-sm shadow">Salva Ruolo</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALE DI MODIFICA DATI ESISTENTI -->
+    <div id="modal-modifica" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
+        <div class="bg-slate-800 border border-slate-700 w-full max-w-lg rounded-2xl max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-4 border-b border-slate-700 flex justify-between items-center bg-slate-800">
+                <h3 class="font-bold text-amber-400 text-lg">Modifica Partecipante</h3>
+                <button onclick="chiudiModali()" class="text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
+            </div>
+            <div class="p-4 overflow-y-auto space-y-3 text-sm flex-1">
+                <input type="hidden" id="edit-id">
+                <input type="hidden" id="edit-scheda-id">
+                
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block text-slate-400 mb-1">Nome</label>
+                        <input type="text" id="edit-nome" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white">
+                    </div>
+                    <div>
+                        <label class="block text-slate-400 mb-1">Cognome</label>
+                        <input type="text" id="edit-cognome" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">Telefono</label>
+                    <input type="text" id="edit-telefono" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white">
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">Profilo Personaggio</label>
+                    <textarea id="edit-profilo" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white"></textarea>
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">Informazioni Pubbliche</label>
+                    <textarea id="edit-pubbliche" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white"></textarea>
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">Segreto Personale</label>
+                    <textarea id="edit-segreto" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white"></textarea>
+                </div>
+            </div>
+            <div class="p-4 border-t border-slate-700 flex justify-end gap-2 bg-slate-800">
+                <button onclick="chiudiModali()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm text-slate-200">Annulla</button>
+                <button onclick="salvaModifiche()" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-lg text-sm">Salva</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script JavaScript -->
+    <script>
+        let listaGiocatoriMemoria = [];
+        let listaSchedeMemoria = [];
+
+        async function caricaGiocatori() {
+            try {
+                const res = await fetch('/api/giocatori');
+                const data = await res.json();
+                
+                listaGiocatoriMemoria = data.giocatori || data;
+                listaSchedeMemoria = data.schede || [];
+                
+                document.getElementById('counter').innerText = `${listaGiocatoriMemoria.length} partecipanti`;
+                const container = document.getElementById('lista-giocatori');
+                container.innerHTML = '';
+
+                listaGiocatoriMemoria.forEach(g => {
+                    const telegramCollegato = g.telegram_chat_id ? 
+                        `<span class="text-xs bg-emerald-900/60 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-700/50">Telegram Connesso</span>` : 
+                        `<span class="text-xs bg-rose-900/60 text-rose-400 px-2 py-0.5 rounded-full border border-rose-700/50">In attesa di /start</span>`;
+
+                    let opzioniRuoli = '<option value="">-- Nessun Ruolo Assegnato --</option>';
+                    listaSchedeMemoria.forEach(s => {
+                        const selected = (s.id === g.scheda_id) ? 'selected' : '';
+                        opzioniRuoli += `<option value="${s.id}" ${selected}>${s.ruolo}</option>`;
+                    });
+
+                    const card = document.createElement('div');
+                    card.className = "bg-slate-800 border border-slate-700/80 rounded-xl p-4 shadow-sm flex flex-col gap-3";
+                    card.innerHTML = `
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <span class="text-xs text-amber-400 font-mono">ID Giocatore: ${g.id}</span>
+                                <h3 class="font-bold text-base text-white">${g.nome} ${g.cognome}</h3>
+                                <p class="text-xs text-slate-400 font-mono mt-0.5">📱 ${g.telefono || 'N/D'}</p>
+                            </div>
+                            <div>${telegramCollegato}</div>
+                        </div>
+
+                        <div class="bg-slate-900/60 p-2.5 rounded-lg border border-slate-700/50">
+                            <label class="block text-xs font-semibold text-amber-400 mb-1">🎭 Ruolo Assegnato:</label>
+                            <select onchange="cambiaRuolo(${g.id}, this.value)" class="w-full bg-slate-800 border border-slate-600 rounded-md p-2 text-sm text-white focus:outline-none focus:border-amber-500">
+                                ${opzioniRuoli}
+                            </select>
+                        </div>
+
+                        <div class="flex flex-wrap gap-2 pt-2 border-t border-slate-700/60">
+                            <button onclick="apriModalMessaggio(${g.id}, '${g.nome.replace(/'/g, "\\'")}')" class="flex-1 bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-semibold py-2 px-3 rounded-lg transition text-center">💬 Manda Messaggio</button>
+                            <button onclick="apriModalModifica(${g.id})" class="bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold py-2 px-3 rounded-lg transition">✏️ Modifica</button>
+                            <button onclick="eliminaGiocatore(${g.id})" class="bg-rose-900/40 hover:bg-rose-800 text-rose-300 text-xs font-semibold py-2 px-3 rounded-lg transition border border-rose-800/50">🗑️</button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (err) {
+                console.error("Errore caricamento:", err);
+            }
+        }
+
+        // --- GESTIONE MODALI ---
+        function apriModalNuovoGiocatore() {
+            document.getElementById('new-g-nome').value = '';
+            document.getElementById('new-g-cognome').value = '';
+            document.getElementById('new-g-telefono').value = '';
+            document.getElementById('modal-nuovo-giocatore').classList.remove('hidden');
+        }
+
+        function apriModalNuovoRuolo() {
+            document.getElementById('new-r-nome').value = '';
+            document.getElementById('new-r-profilo').value = '';
+            document.getElementById('new-r-pubbliche').value = '';
+            document.getElementById('new-r-segreto').value = '';
+            document.getElementById('new-r-obiettivo').value = '';
+            document.getElementById('modal-nuovo-ruolo').classList.remove('hidden');
+        }
+
+        function apriModalModifica(id) {
+            const g = listaGiocatoriMemoria.find(item => item.id === id);
+            if (!g) return;
+
+            document.getElementById('edit-id').value = g.id;
+            document.getElementById('edit-scheda-id').value = g.scheda_id || '';
+            document.getElementById('edit-nome').value = g.nome || '';
+            document.getElementById('edit-cognome').value = g.cognome || '';
+            document.getElementById('edit-telefono').value = g.telefono || '';
+            document.getElementById('edit-profilo').value = g.profilo || '';
+            document.getElementById('edit-pubbliche').value = g.informazioni_pubbliche || '';
+            document.getElementById('edit-segreto').value = g.segreto_personale || '';
+            
+            document.getElementById('modal-modifica').classList.remove('hidden');
+        }
+
+        // Modale unificata per messaggio singolo o broadcast (id = null -> broadcast)
+        function apriModalMessaggio(id, nome = null) {
+            document.getElementById('msg-destinatario-id').value = id || '';
+            document.getElementById('msg-testo').value = '';
+            
+            if (id) {
+                document.getElementById('msg-titolo').innerText = `Invia messaggio a ${nome}`;
+                document.getElementById('msg-label').innerText = `Messaggio privato per ${nome}:`;
+            } else {
+                document.getElementById('msg-titolo').innerText = `📢 Broadcast a Tutti`;
+                document.getElementById('msg-label').innerText = `Messaggio da inviare a tutti i giocatori collegati:`;
+            }
+            
+            document.getElementById('modal-messaggio').classList.remove('hidden');
+        }
+
+        function chiudiModali() {
+            document.getElementById('modal-nuovo-giocatore').classList.add('hidden');
+            document.getElementById('modal-nuovo-ruolo').classList.add('hidden');
+            document.getElementById('modal-modifica').classList.add('hidden');
+            document.getElementById('modal-messaggio').classList.add('hidden');
+        }
+
+        // --- INVIO MESSAGGIO (SMISTAMENTO SINGOLO / BROADCAST) ---
+        async function inviaMessaggioEffettivo() {
+            const id = document.getElementById('msg-destinatario-id').value;
+            const messaggio = document.getElementById('msg-testo').value.trim();
+
+            if (!messaggio) {
+                alert("Scrivi un testo per il messaggio.");
+                return;
+            }
+
+            chiudiModali();
+
+            if (id) {
+                // Invio Singolo
+                try {
+                    const res = await fetch('/api/invia-messaggio', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ id, messaggio })
+                    });
+                    const data = await res.json();
+                    alert(data.message || data.error);
+                } catch (err) {
+                    alert("Errore durante l'invio del messaggio.");
+                }
+            } else {
+                // Invio Broadcast
+                try {
+                    const res = await fetch('/api/invia-broadcast', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ messaggio })
+                    });
+                    const data = await res.json();
+                    alert(data.message || data.error);
+                } catch (err) {
+                    alert("Errore durante l'invio broadcast.");
+                }
+            }
+        }
+
+        // --- SALVATAGGIO NUOVI ELEMENTI ---
+        async function creaGiocatore() {
+            const nome = document.getElementById('new-g-nome').value;
+            const cognome = document.getElementById('new-g-cognome').value;
+            const telefono = document.getElementById('new-g-telefono').value;
+
+            if (!nome || !cognome) {
+                alert("Inserisci almeno nome e cognome.");
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/giocatori', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome, cognome, telefono })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    chiudiModali();
+                    caricaGiocatori();
+                } else {
+                    alert(data.error);
+                }
+            } catch (err) {
+                alert("Errore durante la creazione.");
+            }
+        }
+
+        async function creaRuolo() {
+            const ruolo = document.getElementById('new-r-nome').value;
+            const profilo = document.getElementById('new-r-profilo').value;
+            const informazioni_pubbliche = document.getElementById('new-r-pubbliche').value;
+            const segreto_personale = document.getElementById('new-r-segreto').value;
+            const obiettivo_gioco = document.getElementById('new-r-obiettivo').value;
+
+            if (!ruolo) {
+                alert("Il nome del ruolo è obbligatorio.");
+                return;
+            }
+
+            try {
+                const res = await fetch('/api/schede', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ ruolo, profilo, informazioni_pubbliche, segreto_personale, obiettivo_gioco })
+                });
+                const data = await res.json();
+                if (data.success) {
+                    chiudiModali();
+                    caricaGiocatori();
+                } else {
+                    alert(data.error);
+                }
+            } catch (err) {
+                alert("Errore durante la creazione del ruolo.");
+            }
+        }
+
+        async function cambiaRuolo(giocatoreId, schedaId) {
+            try {
+                await fetch('/api/assegna-ruolo', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ giocatore_id: giocatoreId, scheda_id: schedaId || null })
+                });
+                caricaGiocatori();
+            } catch (err) {
+                alert("Errore durante la riassegnazione.");
+            }
+        }
+
+        async function salvaModifiche() {
+            const id = document.getElementById('edit-id').value;
+            const payload = {
+                nome: document.getElementById('edit-nome').value,
+                cognome: document.getElementById('edit-cognome').value,
+                telefono: document.getElementById('edit-telefono').value,
+                scheda_id: document.getElementById('edit-scheda-id').value,
+                profilo: document.getElementById('edit-profilo').value,
+                informazioni_pubbliche: document.getElementById('edit-pubbliche').value,
+                segreto_personale: document.getElementById('edit-segreto').value
+            };
+
+            const res = await fetch(`/api/giocatori/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+            const data = await res.json();
+            alert(data.message || data.error);
+            chiudiModali();
+            caricaGiocatori();
+        }
+
+        async function eliminaGiocatore(id) {
+            if (!confirm(`Vuoi davvero eliminare questo partecipante?`)) return;
+            const res = await fetch(`/api/giocatori/${id}`, { method: 'DELETE' });
+            const data = await res.json();
+            alert(data.message || data.error);
+            caricaGiocatori();
+        }
+
+        caricaGiocatori();
+    </script>
+</body>
+</html>

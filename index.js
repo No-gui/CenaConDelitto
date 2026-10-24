@@ -265,8 +265,8 @@ app.post('/api/schede', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-    console.log(`🌐 Server web su http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server avviato sulla porta ${PORT}`);
 });
 
 process.once('SIGINT', () => bot.stop('SIGINT'));

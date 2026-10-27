@@ -282,6 +282,22 @@
             document.getElementById('modal-messaggio').classList.add('hidden');
         }
 
+        function inviaSuWhatsApp(nome, telefono, giocatoreId) {
+            // Sostituisci con il username del tuo bot Telegram
+            const botUsername = "DinnerCrime"; 
+            const telegramLink = `https://t.me/${botUsername}?start=giocatore_${giocatoreId}`;
+            
+            const messaggio = `Ciao ${nome}! 🕵️‍♂️ Ecco il tuo invito ufficiale per la Cena con Delitto. Clicca qui per attivare il tuo personaggio su Telegram: ${telegramLink}`;
+            
+            // Pulisci il numero di telefono da spazi o trattini
+            const telefonoPulito = telefono.replace(/[^0-9]/g, '');
+            
+            const whatsappUrl = `https://wa.me/${telefonoPulito}?text=${encodeURIComponent(messaggio)}`;
+            
+            // Apre WhatsApp (funziona sia su mobile che su WhatsApp Desktop)
+            window.open(whatsappUrl, '_blank');
+        }
+
         // --- INVIO MESSAGGIO (SMISTAMENTO SINGOLO / BROADCAST) ---
         async function inviaMessaggioEffettivo() {
             const id = document.getElementById('msg-destinatario-id').value;

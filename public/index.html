@@ -163,7 +163,7 @@
                     <textarea id="edit-obiettivo" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white"></textarea>
                 </div>
                 <div>
-                    <label class="block text-slate-400 mb-1">Segreto Personale</label>
+                    <label class="block text-slate-400 mb-1">Cosa sa</label>
                     <textarea id="edit-cosa-sa" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white"></textarea>
                 </div>
             </div>
@@ -260,6 +260,8 @@
         function apriModalModifica(id) {
             const g = listaGiocatoriMemoria.find(item => item.id === id);
             if (!g) return;
+
+            console.log(JSON.stringify(g))
 
             document.getElementById('edit-id').value = g.id;
             document.getElementById('edit-scheda-id').value = g.scheda_id || '';

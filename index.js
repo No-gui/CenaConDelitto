@@ -147,7 +147,7 @@ app.post('/api/assegna-ruolo', async (req, res) => {
 // Modifica anagrafica giocatore e scheda
 app.put('/api/giocatori/:id', async (req, res) => {
     const { id } = req.params;
-    const { nome, cognome, telefono, scheda_id, profilo, informazioni_pubbliche, segreto_personale, obiettivo_gioco } = req.body;
+    const { nome, cognome, telefono, scheda_id, profilo, informazioni_pubbliche, segreto_personale, obiettivo_gioco, cosa_sa } = req.body;
 
     try {
         await pool.query('UPDATE giocatori SET nome = ?, cognome = ?, telefono = ? WHERE id = ?', [nome, cognome, telefono, id]);
@@ -155,9 +155,9 @@ app.put('/api/giocatori/:id', async (req, res) => {
         if (scheda_id) {
             await pool.query(
                 `UPDATE schede_personaggi 
-                 SET profilo = ?, informazioni_pubbliche = ?, segreto_personale = ?, obiettivo_gioco = ? 
+                 SET profilo = ?, informazioni_pubbliche = ?, segreto_personale = ?, obiettivo_gioco = ? , cosa_sa = ?
                  WHERE id = ?`,
-                [profilo || '', informazioni_pubbliche || '', segreto_personale || '', obiettivo_gioco || '', scheda_id]
+                [profilo || '', informazioni_pubbliche || '', segreto_personale || '', obiettivo_gioco || '', cosa_sa || '', scheda_id]
             );
         }
 

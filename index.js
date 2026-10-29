@@ -105,7 +105,7 @@ app.get('/api/giocatori', async (req, res) => {
             SELECT 
                 g.id, g.nome, g.cognome, g.telefono, g.telegram_chat_id,
                 a.scheda_id,
-                s.ruolo, s.profilo, s.informazioni_pubbliche, s.segreto_personale, s.obiettivo_gioco
+                s.ruolo, s.profilo, s.informazioni_pubbliche, s.segreto_personale, s.obiettivo_gioco, s.cosa_sa
             FROM giocatori g
             LEFT JOIN assegnazioni a ON g.id = a.giocatore_id
             LEFT JOIN schede_personaggi s ON a.scheda_id = s.id

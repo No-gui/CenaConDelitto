@@ -158,6 +158,14 @@
                     <label class="block text-slate-400 mb-1">Segreto Personale</label>
                     <textarea id="edit-segreto" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white"></textarea>
                 </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">Obiettivo di gioco</label>
+                    <textarea id="edit-obiettivo" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white"></textarea>
+                </div>
+                <div>
+                    <label class="block text-slate-400 mb-1">Segreto Personale</label>
+                    <textarea id="edit-cosa-sa" rows="2" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-white"></textarea>
+                </div>
             </div>
             <div class="p-4 border-t border-slate-700 flex justify-end gap-2 bg-slate-800">
                 <button onclick="chiudiModali()" class="px-4 py-2 bg-slate-700 hover:bg-slate-600 rounded-lg text-sm text-slate-200">Annulla</button>
@@ -261,6 +269,8 @@
             document.getElementById('edit-profilo').value = g.profilo || '';
             document.getElementById('edit-pubbliche').value = g.informazioni_pubbliche || '';
             document.getElementById('edit-segreto').value = g.segreto_personale || '';
+            document.getElementById('edit-obiettivo').value = g.obiettivo_gioco || '';
+            document.getElementById('edit-cosa-sa').value = g.cosa_sa || '';
             
             document.getElementById('modal-modifica').classList.remove('hidden');
         }
@@ -427,6 +437,8 @@
                 profilo: document.getElementById('edit-profilo').value,
                 informazioni_pubbliche: document.getElementById('edit-pubbliche').value,
                 segreto_personale: document.getElementById('edit-segreto').value
+                obiettivo_gioco: document.getElementById('edit-obiettivo').value
+                cosa_sa: document.getElementById('edit-cosa-sa').value
             };
 
             const res = await fetch(`/api/giocatori/${id}`, {

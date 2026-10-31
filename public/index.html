@@ -508,6 +508,25 @@
             window.open(whatsappUrl, '_blank');
         }
 
+        function openIndiziModal() {
+            const modal = document.getElementById('indiziModal');
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden'; // Blocca lo scroll di sfondo
+        }
+        
+        function closeIndiziModal() {
+            const modal = document.getElementById('indiziModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto'; // Ripristina lo scroll
+        }
+        
+        // Chiudi la modale cliccando fuori dal contenuto
+        document.getElementById('indiziModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeIndiziModal();
+            }
+        });
+
         // --- INVIO MESSAGGIO (SMISTAMENTO SINGOLO / BROADCAST) ---
         async function inviaMessaggioEffettivo() {
             const id = document.getElementById('msg-destinatario-id').value;

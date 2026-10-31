@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fascicolo di Polizia Scientifica - Reperto #042</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Special Elite per stile macchina da scrivere e Cinzel per i titoli -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Special+Elite&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            typewriter: ['"Special Elite"', 'Courier New', 'monospace'],
+            serifHeader: ['Cinzel', 'serif']
+          },
+          colors: {
+            folder: '#d4c4a8',
+            folderDark: '#bfae91',
+            crimsonStamp: '#990000',
+            policeBlue: '#1a2436',
+            paperBg: '#f6f0e4'
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Texture carta vintage e stili personalizzati */
+    body {
+      background-color: #0d0d0d;
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(20, 20, 20, 0.9), rgba(5, 5, 5, 0.98)),
+        url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+    }
+
+    .paper-dossier {
+      background-color: #f6f0e4;
+      background-image: radial-gradient(#e5dbcb 1px, transparent 1px);
+      background-size: 16px 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 80px rgba(139, 115, 85, 0.3);
+    }
+
+    /* Timbro animato o inclinato */
+    .stamp {
+      border: 4px double #990000;
+      color: #990000;
+      font-family: 'Cinzel', serif;
+      transform: rotate(-12deg);
+      text-shadow: 0 0 1px rgba(153, 0, 0, 0.3);
+      box-shadow: 0 0 0 2px rgba(153,0,0,0.2);
+    }
+
+    /* Animazione dello scanner laser */
+    @keyframes scanAnimation {
+      0% { top: 0%; opacity: 0.8; }
+      50% { top: 95%; opacity: 1; }
+      100% { top: 0%; opacity: 0.8; }
+    }
+
+    .scanner-line {
+      position: absolute;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, #ff0033, #ff6666, #ff0033, transparent);
+      box-shadow: 0 0 15px #ff0033, 0 0 8px #ff6666;
+      animation: scanAnimation 2.2s ease-in-out infinite;
+      display: none;
+    }
+
+    /* Stampa: ottimizzazione per output PDF/Carta */
+    @media print {
+      body {
+        background: #fff !important;
+        padding: 0 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+      .paper-dossier {
+        box-shadow: none !important;
+        border: 1px solid #aaa !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 15mm !important;
+      }
+      .scanner-line {
+        display: none !important;
+      }
+      #deduction-box {
+        display: block !important;
+        opacity: 1 !important;
+      }
+      #scan-btn-container {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="min-h-screen text-gray-900 font-typewriter py-6 px-3 sm:px-6 flex flex-col items-center justify-start select-none">
+
+  <!-- Controls Header (Audio toggle & Print) -->
+  <header class="w-full max-w-3xl flex justify-between items-center mb-4 no-print text-xs sm:text-sm text-gray-400">
+    <div class="flex items-center space-x-2">
+      <span class="inline-block w-2.5 h-2.5 rounded-full bg-red-600 animate-pulse"></span>
+      <span class="tracking-widest uppercase text-gray-300">Connessione Sicura - Scientifica</span>
+    </div>
+    <div class="flex items-center space-x-3">
+      <button id="audio-btn" onclick="toggleAudio()" class="px-3 py-1.5 bg-gray-800 hover:bg-gray-700 text-gray-200 rounded border border-gray-600 transition flex items-center space-x-1">
+        <span id="audio-icon">🔇</span>
+        <span id="audio-label">Audio: OFF</span>
+      </button>
+      <button onclick="window.print()" class="px-3 py-1.5 bg-amber-900/40 hover:bg-amber-800/60 text-amber-200 rounded border border-amber-700/50 transition flex items-center space-x-1">
+        <span>🖨️</span>
+        <span>Stampa Dossier</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Dossier Main Container -->
+  <main class="w-full max-w-3xl paper-dossier rounded-lg p-5 sm:p-10 relative overflow-hidden border-2 border-folderDark">
+    
+    <!-- Macchie visive d'epoca (SVG overlay) -->
+    <div class="absolute top-0 right-0 w-40 h-40 pointer-events-none opacity-10">
+      <svg viewBox="0 0 100 100" fill="#3c2f23">
+        <circle cx="50" cy="50" r="40" />
+      </svg>
+    </div>
+    
+    <!-- Timbro TOP SECRET -->
+    <div class="stamp absolute top-6 right-6 sm:top-10 sm:right-10 px-3 py-1 text-xs sm:text-base font-bold tracking-widest uppercase pointer-events-none">
+      STRETTAMENTE RISERVATO
+    </div>
+
+    <!-- Intestazione Polizia -->
+    <div class="border-b-2 border-gray-800 pb-4 mb-6">
+      <h2 class="font-serifHeader text-lg sm:text-2xl font-bold tracking-wider text-gray-900 uppercase">
+        Dipartimento Investigativo Forense
+      </h2>
+      <p class="text-xs sm:text-sm text-gray-700 font-semibold tracking-widest">
+        SEZIONE ANALISI TRACCE & REPERTI BALISTICI
+      </p>
+    </div>
+
+    <!-- Griglia Metadati -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm bg-black/5 p-3 sm:p-4 rounded border border-gray-400/40 mb-6">
+      <div><strong class="text-gray-700 uppercase">FASCICOLO N°:</strong> DOSSIER-2026-CRIME</div>
+      <div><strong class="text-gray-700 uppercase">REPERTO:</strong> #042 (Arma da Fuoco)</div>
+      <div><strong class="text-gray-700 uppercase">CASO:</strong> Omicidio alla Cena con Delitto</div>
+      <div><strong class="text-gray-700 uppercase">STATO RILIEVO:</strong> <span class="text-red-700 font-bold">ANALISI IN CORSO</span></div>
+    </div>
+
+    <!-- Titolo Reperto -->
+    <div class="mb-6">
+      <h1 class="text-base sm:text-xl font-bold text-red-950 uppercase border-l-4 border-red-800 pl-3 py-1">
+        Rilievo Tracce Biometriche sull'Arma del Delitto
+      </h1>
+      <p class="text-xs sm:text-sm text-gray-600 mt-1 italic">
+        Fabbricazione: Pistola semi-automatica ritrovata in prossimità della scena del crimine.
+      </p>
+    </div>
+
+    <!-- Area Scanner Impronta -->
+    <div class="my-8 flex flex-col items-center">
+      <div id="scanner-box" class="relative w-48 h-56 sm:w-56 sm:h-64 bg-stone-900 rounded-lg border-4 border-stone-700 shadow-inner flex flex-col items-center justify-center p-4 overflow-hidden">
+        
+        <!-- Scanner Laser Line -->
+        <div id="scanner-line" class="scanner-line"></div>
+
+        <!-- SVG Impronta Digitale -->
+        <svg id="fingerprint-svg" class="w-32 h-32 sm:w-40 sm:h-40 text-stone-600 transition-all duration-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2a10 10 0 0 0-8 6.5"></path>
+          <path d="M12 2a10 10 0 0 1 8 6.5"></path>
+          <path d="M12 6a6 6 0 0 0-4.5 2"></path>
+          <path d="M12 6a6 6 0 0 1 4.5 2"></path>
+          <path d="M12 10a2 2 0 0 0-1.5.7"></path>
+          <path d="M12 10a2 2 0 0 1 1.5.7"></path>
+          <path d="M4.5 12a8 8 0 0 0 1.5 8"></path>
+          <path d="M19.5 12a8 8 0 0 1-1.5 8"></path>
+          <path d="M8 14a4 4 0 0 0 1 3.5"></path>
+          <path d="M16 14a4 4 0 0 1-1 3.5"></path>
+          <path d="M12 14v4"></path>
+        </svg>
+
+        <!-- Dynamic Status Label -->
+        <span id="scan-status" class="mt-3 text-xs tracking-widest text-stone-400 font-mono">REPERTO PRONTO</span>
+      </div>
+
+      <!-- Button Trigger -->
+      <div id="scan-btn-container" class="mt-4 no-print">
+        <button id="scan-btn" onclick="startAnalysis()" class="px-6 py-3 bg-red-900 hover:bg-red-800 text-amber-100 font-bold text-sm tracking-wider uppercase rounded shadow-lg transition transform active:scale-95 border border-red-700 flex items-center space-x-2">
+          <span>🔍</span>
+          <span>Analizza Impronta sul Reperto</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Risultato Analisi (Nascosto all'inizio) -->
+    <div id="deduction-box" class="hidden opacity-0 transition-opacity duration-1000 bg-amber-50 border-2 border-red-900/60 p-4 sm:p-6 rounded shadow-md my-6">
+      <div class="flex items-center space-x-2 text-red-900 font-bold text-sm sm:text-base border-b border-red-900/30 pb-2 mb-3">
+        <span>⚠️</span>
+        <span class="uppercase">ESITO DATTILOSCOPICO CONFERMATO</span>
+      </div>
+      
+      <p class="text-xs sm:text-sm sm:leading-relaxed text-stone-900 font-medium">
+        L'analisi dattiloscopica condotta sull'impugnatura e sul grilletto della pistola ha rivelato un'impronta digitale nitida e di recente apposizione. 
+      </p>
+      
+      <p class="text-xs sm:text-sm sm:leading-relaxed text-stone-900 font-medium mt-3">
+        Dai rilievi biometrici, dalla sottigliezza dei solchi papillari e dalla minuziosa spaziatura delle creste epidermiche, la traccia appartiene inequivocabilmente a una <strong class="text-red-900 font-bold underline decoration-2">DONNA</strong>.
+      </p>
+
+      <div class="mt-4 pt-3 border-t border-stone-300 text-xs text-stone-700 italic">
+        📌 <strong>Indicazione per la Squadra Investigativa:</strong> Escludere gli uomini dal cerchio dei sospettati primari per l'impugnatura diretta dell'arma del delitto.
+      </div>
+    </div>
+
+    <!-- Footer Dossier -->
+    <div class="mt-10 pt-4 border-t border-gray-400 flex flex-col sm:flex-row justify-between items-center text-xs text-gray-600 gap-2">
+      <div>REGISTRO SCIENTIFICA #904-B</div>
+      <div>DOC ID: QR-EVIDENCE-01</div>
+      <div>PAGINA 1 DI 1</div>
+    </div>
+
+  </main>
+
+  <footer class="mt-6 text-center text-xs text-gray-500 no-print">
+    Cena con Delitto - Materiale Investigativo Interattivo
+  </footer>
+
+  <!-- Web Audio Synthesis & Logic JavaScript -->
+  <script>
+    let audioEnabled = false;
+    let audioCtx = null;
+
+    // Inizializza Web Audio API su azione utente
+    function initAudio() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+    }
+
+    function toggleAudio() {
+      initAudio();
+      audioEnabled = !audioEnabled;
+      const btnIcon = document.getElementById('audio-icon');
+      const btnLabel = document.getElementById('audio-label');
+      
+      if (audioEnabled) {
+        btnIcon.textContent = '🔊';
+        btnLabel.textContent = 'Audio: ON';
+        playBeep(600, 0.1);
+      } else {
+        btnIcon.textContent = '🔇';
+        btnLabel.textContent = 'Audio: OFF';
+      }
+    }
+
+    // Generatore di effetti sonori sintetizzati (nessun file esterno richiesto)
+    function playBeep(freq, duration, type = 'sine') {
+      if (!audioEnabled || !audioCtx) return;
+      try {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function playScanSound() {
+      if (!audioEnabled || !audioCtx) return;
+      let count = 0;
+      const interval = setInterval(() => {
+        playBeep(800 + (count % 3) * 150, 0.08, 'sawtooth');
+        count++;
+        if (count > 15) clearInterval(interval);
+      }, 120);
+    }
+
+    function playSuccessSound() {
+      if (!audioEnabled || !audioCtx) return;
+      setTimeout(() => playBeep(523.25, 0.15), 0);   // C5
+      setTimeout(() => playBeep(659.25, 0.15), 150); // E5
+      setTimeout(() => playBeep(783.99, 0.3), 300);  // G5
+    }
+
+    // Procedura di Scansione Interattiva
+    function startAnalysis() {
+      initAudio();
+      const btn = document.getElementById('scan-btn');
+      const scannerLine = document.getElementById('scanner-line');
+      const fingerprintSvg = document.getElementById('fingerprint-svg');
+      const statusLabel = document.getElementById('scan-status');
+      const deductionBox = document.getElementById('deduction-box');
+
+      // Disabilita pulsante e avvia animazione
+      btn.disabled = true;
+      btn.classList.add('opacity-50', 'cursor-not-allowed');
+      scannerLine.style.display = 'block';
+      
+      // Feedback visivo impronta in scansione
+      fingerprintSvg.classList.remove('text-stone-600', 'text-emerald-500');
+      fingerprintSvg.classList.add('text-red-600', 'animate-pulse');
+      
+      statusLabel.textContent = "SCANSIONE IN CORSO...";
+      statusLabel.classList.remove('text-stone-400');
+      statusLabel.classList.add('text-red-500', 'font-bold');
+
+      playScanSound();
+
+      // Rivelazione dopo 2.5 secondi
+      setTimeout(() => {
+        scannerLine.style.display = 'none';
+        
+        fingerprintSvg.classList.remove('text-red-600', 'animate-pulse');
+        fingerprintSvg.classList.add('text-emerald-500');
+        
+        statusLabel.textContent = "ANALISI COMPLETATA";
+        statusLabel.classList.remove('text-red-500');
+        statusLabel.classList.add('text-emerald-400');
+
+        // Mostra box deduzione
+        deductionBox.classList.remove('hidden');
+        setTimeout(() => {
+          deductionBox.classList.remove('opacity-0');
+        }, 50);
+
+        playSuccessSound();
+
+        // Nasconde il pulsante di scansione dopo il completamento
+        document.getElementById('scan-btn-container').style.display = 'none';
+      }, 2500);
+    }
+  </script>
+</body>
+</html>

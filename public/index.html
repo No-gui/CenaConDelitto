@@ -45,6 +45,154 @@
         </div>
     </main>
 
+    <!-- Modale Indizi -->
+<div id="indiziModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+  <div class="bg-white rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
+    
+    <!-- Header Modale -->
+    <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center border-b border-slate-800">
+      <h2 class="text-xl font-bold flex items-center gap-2">
+        <span>🔍</span> Tabella Indizi e Assegnazioni
+      </h2>
+      <button onclick="closeIndiziModal()" class="text-slate-400 hover:text-white text-2xl font-bold p-1">
+        &times;
+      </button>
+    </div>
+
+    <!-- Contenuto Tabella (Scrollabile) -->
+    <div class="p-4 sm:p-6 overflow-y-auto">
+      <div class="overflow-x-auto rounded-lg border border-slate-200">
+        <table class="w-full text-sm text-left text-slate-700 border-collapse">
+          <thead class="text-xs uppercase bg-slate-800 text-white sticky top-0">
+            <tr>
+              <th scope="col" class="py-3 px-4 w-12 text-center">#</th>
+              <th scope="col" class="py-3 px-4">Indizi</th>
+              <th scope="col" class="py-3 px-4 w-32 text-center">Copia</th>
+              <th scope="col" class="py-3 px-4 w-56">A chi vengono affidati</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-200">
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="py-3 px-4 text-center font-bold text-slate-500">1</td>
+              <td class="py-3 px-4 indizio-text">C'è un oggetto per te, vieni in camera per riceverlo. Potrebbe esserti utile per il tuo piano di ricattare il figlio, ma occhio a non farti scoprire.[cite: 1]</td>
+              <td class="py-3 px-4 text-center">
+                <button onclick="copiaIndizio(this)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-1 px-3 rounded text-xs transition-colors border border-slate-300">📋 Copia</button>
+              </td>
+              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Migliore amico del figlio[cite: 1]</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="py-3 px-4 text-center font-bold text-slate-500">2</td>
+              <td class="py-3 px-4 indizio-text">C'è un indizio per te, vieni in camera per ricevere la busta. I tuoi sospetti potrebbero essere fondati.[cite: 1]</td>
+              <td class="py-3 px-4 text-center">
+                <button onclick="copiaIndizio(this)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-1 px-3 rounded text-xs transition-colors border border-slate-300">📋 Copia</button>
+              </td>
+              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Moglie del direttore[cite: 1]</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="py-3 px-4 text-center font-bold text-slate-500">3</td>
+              <td class="py-3 px-4 indizio-text">Qualcuno ha scoperto dei problemi economici nascosti dal direttore, parlane con lui e cerca di capire chi sa quell'informazione.[cite: 1]</td>
+              <td class="py-3 px-4 text-center">
+                <button onclick="copiaIndizio(this)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-1 px-3 rounded text-xs transition-colors border border-slate-300">📋 Copia</button>
+              </td>
+              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Notaio[cite: 1]</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="py-3 px-4 text-center font-bold text-slate-500">4</td>
+              <td class="py-3 px-4 indizio-text">C'è un indizio per te, vieni in bagno per ricevere la busta. Cerca di capire a chi appartiene...potrebbe svelare dei nuovi personaggi.[cite: 1]</td>
+              <td class="py-3 px-4 text-center">
+                <button onclick="copiaIndizio(this)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-1 px-3 rounded text-xs transition-colors border border-slate-300">📋 Copia</button>
+              </td>
+              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Giornalista[cite: 1]</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="py-3 px-4 text-center font-bold text-slate-500">5</td>
+              <td class="py-3 px-4 indizio-text">Se trovi i tuoi alleati la partita potrebbe diventare più semplice per te. Ricorda...hai molto da perdere.[cite: 1]</td>
+              <td class="py-3 px-4 text-center">
+                <button onclick="copiaIndizio(this)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-1 px-3 rounded text-xs transition-colors border border-slate-300">📋 Copia</button>
+              </td>
+              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Domestica[cite: 1]</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="py-3 px-4 text-center font-bold text-slate-500">6</td>
+              <td class="py-3 px-4 indizio-text">Devi trovare dei soldi da dare ad Alessandro prima che sia troppo tardi. Occhio a non farti scoprire. Potrebbe rivelare il tuo segreto agli altri.[cite: 1]</td>
+              <td class="py-3 px-4 text-center">
+                <button onclick="copiaIndizio(this)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-1 px-3 rounded text-xs transition-colors border border-slate-300">📋 Copia</button>
+              </td>
+              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Figlio[cite: 1]</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="py-3 px-4 text-center font-bold text-slate-500">7</td>
+              <td class="py-3 px-4 indizio-text">C'è un indizio per te, vieni in camera per ricevere la busta. I tuoi investigatori hanno trovato qualcosa.[cite: 1]</td>
+              <td class="py-3 px-4 text-center">
+                <button onclick="copiaIndizio(this)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-1 px-3 rounded text-xs transition-colors border border-slate-300">📋 Copia</button>
+              </td>
+              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Marito della segretaria[cite: 1]</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="py-3 px-4 text-center font-bold text-slate-500">8</td>
+              <td class="py-3 px-4 indizio-text">Qualcuno ha delle informazioni su Michela. Parla con Michela e capite come agire. La situazione sta sfuggendo di mano.[cite: 1]</td>
+              <td class="py-3 px-4 text-center">
+                <button onclick="copiaIndizio(this)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-1 px-3 rounded text-xs transition-colors border border-slate-300">📋 Copia</button>
+              </td>
+              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Mandante[cite: 1]</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="py-3 px-4 text-center font-bold text-slate-500">9</td>
+              <td class="py-3 px-4 indizio-text">Condividi ciò che sai con Marco Misiti, e capite insieme come agire a riguardo.[cite: 1]</td>
+              <td class="py-3 px-4 text-center">
+                <button onclick="copiaIndizio(this)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-1 px-3 rounded text-xs transition-colors border border-slate-300">📋 Copia</button>
+              </td>
+              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Autista[cite: 1]</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="py-3 px-4 text-center font-bold text-slate-500">10</td>
+              <td class="py-3 px-4 indizio-text">Parla con tuo nipote e cerca di capire come nascondere il suo segreto. Qualcuno ha già una prova che potrebbe incastrarlo. Capite come agire.[cite: 1]</td>
+              <td class="py-3 px-4 text-center">
+                <button onclick="copiaIndizio(this)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-1 px-3 rounded text-xs transition-colors border border-slate-300">📋 Copia</button>
+              </td>
+              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Padre[cite: 1]</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="py-3 px-4 text-center font-bold text-slate-500">11</td>
+              <td class="py-3 px-4 indizio-text">Parla con la sorella della vittima. Potreste avere un obiettivo in comune. Qualcuno potrebbe non essere chi dice di essere.[cite: 1]</td>
+              <td class="py-3 px-4 text-center">
+                <button onclick="copiaIndizio(this)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-1 px-3 rounded text-xs transition-colors border border-slate-300">📋 Copia</button>
+              </td>
+              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Migliore amica della sposa[cite: 1]</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="py-3 px-4 text-center font-bold text-slate-500">12</td>
+              <td class="py-3 px-4 indizio-text">Parla con la giornalista. Potrebbe avere un indizio a cui tu potresti dare un qualcosa in più.[cite: 1]</td>
+              <td class="py-3 px-4 text-center">
+                <button onclick="copiaIndizio(this)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-1 px-3 rounded text-xs transition-colors border border-slate-300">📋 Copia</button>
+              </td>
+              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Figlia[cite: 1]</td>
+            </tr>
+            <tr class="hover:bg-slate-50 transition-colors">
+              <td class="py-3 px-4 text-center font-bold text-slate-500">13</td>
+              <td class="py-3 px-4 indizio-text">Ricordati di ciò che hai visto, potrebbe tornarti utile per il tavolo di confronto.[cite: 1]</td>
+              <td class="py-3 px-4 text-center">
+                <button onclick="copiaIndizio(this)" class="bg-slate-100 hover:bg-slate-200 text-slate-700 font-medium py-1 px-3 rounded text-xs transition-colors border border-slate-300">📋 Copia</button>
+              </td>
+              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Giardiniere[cite: 1]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Footer Modale -->
+    <div class="bg-slate-100 px-6 py-3 border-t border-slate-200 flex justify-end">
+      <button 
+        onclick="closeIndiziModal()" 
+        class="bg-slate-800 hover:bg-slate-900 text-white font-medium py-2 px-5 rounded-lg transition-colors">
+        Chiudi
+      </button>
+    </div>
+
+  </div>
+</div>
+
     <!-- MODALE: INVIO MESSAGGIO (SINGOLO O BROADCAST) -->
     <div id="modal-messaggio" class="fixed inset-0 bg-black/70 backdrop-blur-sm hidden z-50 flex items-center justify-center p-4">
         <div class="bg-slate-800 border border-slate-700 w-full max-w-md rounded-2xl flex flex-col shadow-2xl overflow-hidden">
@@ -181,101 +329,6 @@
                 <button onclick="salvaModifiche()" class="px-4 py-2 bg-amber-600 hover:bg-amber-500 text-white font-semibold rounded-lg text-sm">Salva</button>
             </div>
         </div>
-
-        <!-- Modale Indizi -->
-<div id="indiziModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-  <div class="bg-white rounded-xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col overflow-hidden animate-in fade-in zoom-in duration-200">
-    
-    <!-- Header Modale -->
-    <div class="bg-slate-900 text-white px-6 py-4 flex justify-between items-center border-b border-slate-800">
-      <h2 class="text-xl font-bold flex items-center gap-2">
-        <span>🔍</span> Tabella Indizi e Assegnazioni
-      </h2>
-      <button onclick="closeIndiziModal()" class="text-slate-400 hover:text-white text-2xl font-bold p-1">
-        &times;
-      </button>
-    </div>
-
-    <!-- Contenuto Tabella (Scrollabile) -->
-    <div class="p-4 sm:p-6 overflow-y-auto">
-      <div class="overflow-x-auto rounded-lg border border-slate-200">
-        <table class="w-full text-sm text-left text-slate-700 border-collapse">
-          <thead class="text-xs uppercase bg-slate-800 text-white sticky top-0">
-            <tr>
-              <th scope="col" class="py-3 px-4 w-12 text-center">#</th>
-              <th scope="col" class="py-3 px-4">Indizi</th>
-              <th scope="col" class="py-3 px-4 w-56">A chi vengono affidati</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-200">
-            <tr class="hover:bg-slate-50 transition-colors">
-              <td class="py-3 px-4 text-center font-bold text-slate-500">1</td>
-              <td class="py-3 px-4">C'è un oggetto per te, vieni in camera per riceverlo. Potrebbe esserti utile per il tuo piano di ricattare il figlio, ma occhio a non farti scoprire.[cite: 1]</td>
-              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Migliore amico del figlio[cite: 1]</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition-colors">
-              <td class="py-3 px-4 text-center font-bold text-slate-500">2</td>
-              <td class="py-3 px-4">C'è un indizio per te, vieni in camera per ricevere la busta. I tuoi sospetti potrebbero essere fondati.[cite: 1]</td>
-              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Moglie del direttore[cite: 1]</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition-colors">
-              <td class="py-3 px-4 text-center font-bold text-slate-500">3</td>
-              <td class="py-3 px-4">Qualcuno ha scoperto dei problemi economici nascosti dal direttore, parlane con lui e cerca di capire chi sa quell'informazione.[cite: 1]</td>
-              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Notaio[cite: 1]</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition-colors">
-              <td class="py-3 px-4 text-center font-bold text-slate-500">4</td>
-              <td class="py-3 px-4">C'è un indizio per te, vieni in bagno per ricevere la busta. Cerca di capire a chi appartiene...potrebbe svelare dei nuovi personaggi.[cite: 1]</td>
-              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Giornalista[cite: 1]</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition-colors">
-              <td class="py-3 px-4 text-center font-bold text-slate-500">5</td>
-              <td class="py-3 px-4">Se trovi i tuoi alleati la partita potrebbe diventare più semplice per te. Ricorda...hai molto da perdere.[cite: 1]</td>
-              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Domestica[cite: 1]</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition-colors">
-              <td class="py-3 px-4 text-center font-bold text-slate-500">6</td>
-              <td class="py-3 px-4">Devi trovare dei soldi da dare ad Alessandro prima che sia troppo tardi. Occhio a non farti scoprire. Potrebbe rivelare il tuo segreto agli altri.[cite: 1]</td>
-              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Figlio[cite: 1]</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition-colors">
-              <td class="py-3 px-4 text-center font-bold text-slate-500">7</td>
-              <td class="py-3 px-4">C'è un indizio per te, vieni in camera per ricevere la busta. I tuoi investigatori hanno trovato qualcosa.[cite: 1]</td>
-              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Marito della segretaria[cite: 1]</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition-colors">
-              <td class="py-3 px-4 text-center font-bold text-slate-500">8</td>
-              <td class="py-3 px-4">Qualcuno ha delle informazioni su Michela. Parla con Michela e capite come agire. La situazione sta sfuggendo di mano.[cite: 1]</td>
-              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Mandante[cite: 1]</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition-colors">
-              <td class="py-3 px-4 text-center font-bold text-slate-500">9</td>
-              <td class="py-3 px-4">Condividi ciò che sai con Marco Misiti, e capite insieme come agire a riguardo.[cite: 1]</td>
-              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Autista[cite: 1]</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition-colors">
-              <td class="py-3 px-4 text-center font-bold text-slate-500">10</td>
-              <td class="py-3 px-4">Parla con tuo nipote e cerca di capire come nascondere il suo segreto. Qualcuno ha già una prova che potrebbe incastrarlo. Capite come agire.[cite: 1]</td>
-              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Padre[cite: 1]</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition-colors">
-              <td class="py-3 px-4 text-center font-bold text-slate-500">11</td>
-              <td class="py-3 px-4">Parla con la sorella della vittima. Potreste avere un obiettivo in comune. Qualcuno potrebbe non essere chi dice di essere.[cite: 1]</td>
-              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Migliore amica della sposa[cite: 1]</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition-colors">
-              <td class="py-3 px-4 text-center font-bold text-slate-500">12</td>
-              <td class="py-3 px-4">Parla con la giornalista. Potrebbe avere un indizio a cui tu potresti dare un qualcosa in più.[cite: 1]</td>
-              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Figlia[cite: 1]</td>
-            </tr>
-            <tr class="hover:bg-slate-50 transition-colors">
-              <td class="py-3 px-4 text-center font-bold text-slate-500">13</td>
-              <td class="py-3 px-4">Ricordati di ciò che hai visto, potrebbe tornarti utile per il tavolo di confronto.[cite: 1]</td>
-              <td class="py-3 px-4 font-semibold text-slate-900 bg-amber-50/50">Giardiniere[cite: 1]</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </div>
 
     <!-- Footer Modale -->
@@ -295,6 +348,28 @@
     <script>
         let listaGiocatoriMemoria = [];
         let listaSchedeMemoria = [];
+
+        function copiaIndizio(button) {
+            const row = button.closest('tr');
+            const textElement = row.querySelector('.indizio-text');
+            const testoDaCopiare = textElement.textContent.trim();
+        
+            navigator.clipboard.writeText(testoDaCopiare).then(() => {
+                const originalText = button.textContent;
+                button.textContent = "✅ Copiato!";
+                button.classList.remove('bg-slate-100', 'text-slate-700');
+                button.classList.add('bg-green-600', 'text-white');
+        
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('bg-green-600', 'text-white');
+                    button.classList.add('bg-slate-100', 'text-slate-700');
+                }, 1500);
+            }).catch(err => {
+                console.error('Errore durante la copia: ', err);
+                alert('Impossibile copiare il testo.');
+            });
+        }
 
         async function caricaGiocatori() {
             try {
